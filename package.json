@@ -1,0 +1,17 @@
+{
+  "name": "push_notification_server",
+  "version": "1.0.0",
+  "description": "Node.js server for sending push notifications",
+  "main": "server.js",
+  "scripts": {
+    "start": "node app.js",
+    "monitor": "nodemon app.js"
+  },
+  "author": "Mieczyslaw Suska",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1",
+    "web-push": "^3.2.2"
+  }
+}
