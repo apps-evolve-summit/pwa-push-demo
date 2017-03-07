@@ -16,6 +16,7 @@ For the running application, see
 ### Architecture of Push notification
 * How does the flow work?
 * Why is it not integrated with Safari?
+
 ### Integration with APNM
 * Android only?
 * maybe out-of-scope
