@@ -10,12 +10,12 @@ For the running application, see
 * Integrate in Summit PWA Application
 * Integrate timer package (job scheduler)
 * Create Deck
-  ** Constraints: 20 minutes
-     *** Part I: Deck (15m)
-     *** Part II: Show live app + code walkthrough (5m)
-         **** Show/discuss what had to be added to the Summit App to enable push notification
-     *** Part III: Questions + Discussions
- ** Details: see below
+  * Constraints: 20 minutes
+    * Part I: Deck (15m)
+    * Part II: Show live app + code walkthrough (5m)
+      * Show/discuss what had to be added to the Summit App to enable push notification
+    * Part III: Questions + Discussions
+ * Details: see below
 
 ## Deck Sketch
 ### Architecture of Push notification
@@ -29,4 +29,4 @@ For the running application, see
 ### Social Perspective
 * DOs and DONTs of push notifications
 * When to use it?
-  ** Article on ...
+  * Article on ...
