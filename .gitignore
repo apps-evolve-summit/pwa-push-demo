@@ -1,2 +1,4 @@
 node_modules/
 .tern-port
+/server/node_modules
+/.vscode

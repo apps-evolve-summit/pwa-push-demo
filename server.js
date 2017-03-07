@@ -15,8 +15,6 @@ app.use('/', express.static('pwa_client'));
 // generate public and private vapid keys
 // console.log(webpush.generateVAPIDKeys());
 
-let subscriptionObject = null;
-
 // implementation of push notification method
 app.post('/api/send-push', (req, res) => {
     const options = {
@@ -28,45 +26,70 @@ app.post('/api/send-push', (req, res) => {
         TTL: 60 * 60
     };
 
-    console.log(req.body);
+    var allSubscriptions = getAllSubscriptions();
 
-    webpush.sendNotification(
-        //req.body.subscription,
-        subscriptionObject,
-        req.body.data,
-        options
-    ).then(() => {
-        res.status(200).send({success: true});
-    }).catch((err) => {
-        if (err.statusCode) {
-        res.status(err.statusCode).send(err.body);
-        } else {
-        res.status(400).send(err.message);
-        }
+    allSubscriptions.forEach(subscriber => {
+        webpush.sendNotification(
+            subscriber,
+            req.body.data,
+            options
+            ).then(() => {
+                // res.status(200).send({success: true});
+            }).catch((err) => {
+                if (err.statusCode) {
+                res.status(err.statusCode).send(err.body);
+                } else {
+                res.status(400).send(err.message);
+                }
+            });
     });
+    res.status(200).send({success: true});    
 });
 
 app.post('/registerSubscription', (req, res) => {
-    subscriptionObject = req.body.subscription;
-    console.log(JSON.stringify(subscriptionObject));
+    var subscriptionObject = req.body.subscription;
+    
+    var allSubscriptions = getAllSubscriptions();
+    
+    allSubscriptions.push(subscriptionObject);
+    file.writeFileSync('./subscriptions/subscriptions.json', JSON.stringify(allSubscriptions), {flag: 'w+' });
     res.status(200).send({success: true});
 });
 
-// only for test
-app.post('/test', (req, res) => {
-    var a = req.body.a;
-    var b = req.body.b;
+app.post('/unregisterSubscription', (req, res) => {
+    var subscriptionObject = req.body.subscription;
+    
+    var allSubscriptions = getAllSubscriptions();
 
-    var result = parseInt(a) + parseInt(b);
-    console.log(result.toString());  
+    var index = allSubscriptions.findIndex(element => {
+        return element.endpoint == subscriptionObject.endpoint;                
+    });
+    
+    if (index >= 0) {
+        allSubscriptions.splice(index, 1);
+    }
+    file.writeFileSync('./subscriptions/subscriptions.json', JSON.stringify(allSubscriptions), {flag: 'w+' });
+    res.status(200).send({success: true});
 });
 
-// save to file
-app.post('/save', (req, res) => {
-    file.appendFileSync('test.txt', 'Hello world!');
+function getAllSubscriptions() {
+    var fileContent = "[]";
 
-     res.status(200).send({success: true});
-});
+    if (file.existsSync('./subscriptions/subscriptions.json')) {
+        fileContent = file.readFileSync('./subscriptions/subscriptions.json', 'utf8');
+
+        if (fileContent.length == 0) {
+            fileContent = '[]';
+        }
+    }
+
+    var allSubscriptions = JSON.parse(fileContent);
+    if (!Array.isArray(allSubscriptions)) {
+        allSubscriptions = [];    
+    }
+
+    return allSubscriptions;
+}
 
 // start node.js server
 const server = app.listen(process.env.PORT || '3000', () => {

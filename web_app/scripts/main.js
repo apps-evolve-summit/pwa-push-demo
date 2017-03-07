@@ -81,6 +81,26 @@ function sendPushMessageWithAction() {
     });
 }
 
+function sendPushMessageWithCustomBadge() {
+    fetch('/api/send-push', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            data: JSON.stringify({title: 'Push notification with Custom Badge',
+                    body: 'This is what a push notification with custom badge',
+                    icon: './web_app/images/coffee.png',
+                    badge: './web_app/images/coffee-beans.png',
+                    vibrate: [200, 100, 300, 100, 200, 100, 400],                    
+                    requireInteraction: reqInt     
+            })            
+        })
+    }).then((response) => {
+        console.log(response);
+    });
+}
+
 function initUI() {
     const basicPushNotificationBtn = document.querySelector('#btnSimplePush');
     basicPushNotificationBtn.addEventListener('click', () => {
@@ -95,6 +115,11 @@ function initUI() {
     const pushNotificationWithVibratingBtn = document.querySelector('#btnPushWithVibrating');
     pushNotificationWithVibratingBtn.addEventListener('click', () => {
         sendPushMessageWithVibrating();
+    });
+
+    const pushNotificationWithCustomBadge = document.querySelector('#btnPushWithCustomBadge');
+    pushNotificationWithCustomBadge.addEventListener('click', () => {
+        sendPushMessageWithCustomBadge();
     });
 
     const pushNotificationWithActionBtn = document.querySelector('#btnPushNotificationWithAction');

@@ -3,7 +3,6 @@ var swRegistration;
 var isSubscribed;
 const publicServerKey = 'BGLh-Zyk0vcAhjb1mpSmdyNRk9VnndafH0bHAksx8LhQCPAULzxI_DeuT6mU0MBpN4STMpzBQJ1eakM-TBi8VN8';
 const subscribeButton = document.querySelector('#btnSubscribe');
-const saveButton = document.querySelector('#btnSave');
 
 // register service worker
 if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -30,15 +29,6 @@ function initUI() {
     } else {
       subscribeUser();
     }
-
-    //registerSubscriptionOnServer();
-  });
-
-  saveButton.addEventListener('click', function() {
-    fetch('/save', {
-        method: 'POST'}).then(() => {
-          console.log('Saved');
-        });
   });
 
   // tries to get details of active subscription
@@ -90,9 +80,11 @@ function subscribeUser() {
 
 // unsubscribe user
 function unsubscribeUser() {
+  var subscriptionObject;
   swRegistration.pushManager.getSubscription()
   .then(function(subscription) {
     if (subscription) {
+      subscriptionObject = subscription;
       return subscription.unsubscribe();
     }
   }).catch(function(err) {
@@ -101,13 +93,25 @@ function unsubscribeUser() {
     // unsegister user on server
     console.log("User successfully unsubscribed");
     isSubscribed = false;
-    registerSubscriptionOnServer(null);
+    unregisterSubscriptionOnServer(subscriptionObject);
     updateSubscriptionButton();
   });
 }
 
 function registerSubscriptionOnServer(subscription) {
   fetch('/registerSubscription', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            subscription: subscription,          
+            })            
+        });
+}
+
+function unregisterSubscriptionOnServer(subscription) {
+  fetch('/unregisterSubscription', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
