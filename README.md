@@ -7,9 +7,9 @@ For the running application, see
 [server](https://pwa-push-demo2.azurewebsites.net/web_app/index.html)
 
 ## TODOs
-* Integrate in Summit PWA Application
-* Integrate timer package (job scheduler)
-* Create Deck
+* Integrate in Summit PWA Application [MK]
+* Integrate timer package (job scheduler) [MS]
+* Create Deck [MS+MK]
   * Constraints: 20 minutes
     * Part I: Deck (15m)
     * Part II: Show live app + code walkthrough (5m)
