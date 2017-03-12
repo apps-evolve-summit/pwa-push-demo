@@ -8,9 +8,9 @@ For the running application, see
 
 ## TODOs
 * Integrate in Summit PWA Application [MK]
- * Need to be modified:
-   * Node.js part summit-app-nodejs
-   * PWA application - summit-app
+  * Need to be modified:
+    * Node.js part summit-app-nodejs
+    * PWA application - summit-app
 * Integrate timer package (job scheduler) [MS]
 * Create Deck [MS+MK]g
   * Constraints: 20 minutes
