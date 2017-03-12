@@ -18,7 +18,7 @@ For the running application, see
     * Part II: Show live app + code walkthrough (5m)
       * Show/discuss what had to be added to the Summit App to enable push notification
     * Part III: Questions + Discussions
- * Details: see below
+  * Details: see below
 
 ## Deck Sketch
 ### Architecture of Push notification
