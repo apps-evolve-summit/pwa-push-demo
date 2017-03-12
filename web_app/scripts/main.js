@@ -1,7 +1,6 @@
 var reqInt = false;         // require interaction
 
-function getNumberOfSubscribers() { 
-    let result = '';
+function getNumberOfSubscribers() {  
     return fetch('/getSubsCount', {
         method: 'GET'                    
     }).then((res) => {
@@ -66,6 +65,9 @@ function sendPushMessageWithVibrating() {
 }
 
 function sendPushMessageWithAction() {
+    fetch('/resetVotingResult', {
+        method: 'GET'                    
+    });
     fetch('/api/send-push', {
         method: 'POST',
         headers: {

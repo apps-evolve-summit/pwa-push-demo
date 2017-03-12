@@ -111,8 +111,18 @@ app.get('/voteNo', function (req, res) {
     res.sendStatus(200);
 });
 
+app.get('/resetVotingResult', function (req, res) {
+    yesVotes = 0;
+    noVotes = 0;
+    res.sendStatus(200);
+});
+
 app.get('/getResultVote', function (req, res) {
-    res.status(200).send('YES: ' + yesVotes + ' NO: ' + noVotes);
+    if (yesVotes == 0 && noVotes == 0) {
+        res.status(200).send('');    
+    } else {
+        res.status(200).send('YES: ' + yesVotes + '\r\nNO: ' + noVotes);
+    }
 });
 
 function getAllSubscriptions() {

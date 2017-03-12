@@ -3,6 +3,8 @@ var swRegistration;
 var isSubscribed;
 const publicServerKey = 'BGLh-Zyk0vcAhjb1mpSmdyNRk9VnndafH0bHAksx8LhQCPAULzxI_DeuT6mU0MBpN4STMpzBQJ1eakM-TBi8VN8';
 const subscribeButton = document.querySelector('#btnSubscribe');
+const votingResultCard = document.querySelector('#votingResultCard');
+const txtSubscriptionDetails = document.querySelector('#txtSubscriptionDetails');
 
 // register service worker
 if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -22,7 +24,7 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 
 // initialize UI and get subscription details
 function initUI() {
-  subscribeButton.addEventListener('click', function() {
+  subscribeButton.addEventListener('click', function() {    
     subscribeButton.disabled = true;
     if (isSubscribed) {
       unsubscribeUser();
@@ -38,9 +40,11 @@ function initUI() {
 
     if (isSubscribed) {
       console.log('User\'s subscription is active!');
-      // write to output subscription details
-      console.log(JSON.stringify(subscription));
+      txtSubscriptionDetails.style.display = "";
+      txtSubscriptionDetails.value = JSON.stringify(subscription);     
     } else {
+      txtSubscriptionDetails.style.display = "none";
+      txtSubscriptionDetails.value = "";
       console.log('User is not subscribed!');
     }
 
@@ -53,7 +57,7 @@ function initUI() {
       }).then((res) => {
           return res.text();
       }).then((text) => {
-          document.querySelector('#txtVoteResult').value = text;
+         // document.querySelector('#txtVoteResult').value = text;
       });
     }
   });
@@ -62,9 +66,10 @@ function initUI() {
 // refreshes the state of the "Subscribe / unsubscribe" button
 function updateSubscriptionButton() {
   if (isSubscribed) {
-    subscribeButton.textContent = 'Unsubscribe';
+    subscribeButton.icon = 'social:notifications-active';    
   } else {
-    subscribeButton.textContent = 'Subscribe';
+    subscribeButton.icon = 'social:notifications-off';
+    votingResultCard.style.display = "none";
   }
 
   subscribeButton.disabled = false;
@@ -80,7 +85,8 @@ function subscribeUser() {
   }).then(function(subscription){
     isSubscribed = true;
     console.log('User successfully subscribed');
-    console.log(JSON.stringify(subscription));
+    txtSubscriptionDetails.style.display = "";
+    txtSubscriptionDetails.value = JSON.stringify(subscription);
     updateSubscriptionButton();
     registerSubscriptionOnServer(subscription);
     
@@ -103,6 +109,7 @@ function unsubscribeUser() {
   }).then(function() {
     // unsegister user on server
     console.log("User successfully unsubscribed");
+    txtSubscriptionDetails.style.display = "none";
     isSubscribed = false;
     unregisterSubscriptionOnServer(subscriptionObject);
     updateSubscriptionButton();

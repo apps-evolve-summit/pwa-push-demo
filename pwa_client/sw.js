@@ -26,7 +26,7 @@ self.addEventListener('notificationclick', function(event) {
       method: 'GET'                    
     }).then(() => {});
     event.waitUntil(
-        self.clients.openWindow('./index.html?voted=1'));
+        self.clients.openWindow('./index.html'));
     }
 });
 
