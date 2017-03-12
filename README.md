@@ -12,7 +12,7 @@ For the running application, see
     * Node.js part summit-app-nodejs
     * PWA application - summit-app
 * Integrate timer package (job scheduler) [MS]
-* Create Deck [MS+MK]g
+* Create Deck [MS+MK]
   * Constraints: 20 minutes
     * Part I: Deck (15m)
     * Part II: Show live app + code walkthrough (5m)
