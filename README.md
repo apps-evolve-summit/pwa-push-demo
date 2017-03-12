@@ -7,7 +7,7 @@ For the running application, see
 [server](https://pwa-push-demo2.azurewebsites.net/web_app/index.html)
 
 ## TODOs
-* Integrate in Summit PWA Application
+* Integrate in Summit PWA Application \[MK]
   * Need to be modified:
     * Node.js part summit-app-nodejs
     * PWA application - summit-app
