@@ -45,6 +45,17 @@ function initUI() {
     }
 
     updateSubscriptionButton();
+
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('voted')) {
+      fetch('/getResultVote', {
+        method: 'GET'                    
+      }).then((res) => {
+          return res.text();
+      }).then((text) => {
+          document.querySelector('#txtVoteResult').value = text;
+      });
+    }
   });
 }
 
