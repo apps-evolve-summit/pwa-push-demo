@@ -7,18 +7,18 @@ For the running application, see
 [server](https://pwa-push-demo2.azurewebsites.net/web_app/index.html)
 
 ## TODOs
-* Integrate in Summit PWA Application [MK] 
-  * Need to be modified:
-       * Node.js part summit-app-nodejs 
-       * PWA application - summit-app
-* Integrate timer package (job scheduler) [MS]
-* Create Deck [MS+MK]g
-  * Constraints: 20 minutes
+* Integrate in Summit PWA Application \[MK]
+  * Need to be modified:
+    * Node.js part summit-app-nodejs
+    * PWA application - summit-app
+* Integrate timer package (job scheduler) \[MS]
+* Create Deck \[MS+MK]
+  * Constraints: 20 minutes
     * Part I: Deck (15m)
     * Part II: Show live app + code walkthrough (5m)
       * Show/discuss what had to be added to the Summit App to enable push notification
     * Part III: Questions + Discussions
- * Details: see below
+  * Details: see below
 
 ## Deck Sketch
 ### Architecture of Push notification
