@@ -49,6 +49,8 @@ app.post('/api/send-push', (req, res) => {
 
 app.post('/api/send-push-to-winner', (req, res) => {
     var allSubscriptions = getAllSubscriptions();
+
+    if (allSubscriptions.length > 0){
     var subscriber = allSubscriptions[JSON.parse(req.body.data).subscriberId]; 
 
     webpush.sendNotification(
@@ -65,7 +67,9 @@ app.post('/api/send-push-to-winner', (req, res) => {
             }
         });
     
-    res.status(200).send({success: true});    
+    res.status(200).send({success: true}); 
+    
+    }   
 });
 
 app.post('/registerSubscription', (req, res) => {
