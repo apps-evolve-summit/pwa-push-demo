@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>reveal.js</title>
+
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/black.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+          <div class="slides">
+
+            <!- ========== START of deck ========== ->
+
+            <section>
+              <h1>PWA Push Notifications</h1>
+              <h2>Apps Evolve Summit</h2>
+              <h3>Mieczyslaw Suska<br> &amp; Mathias Kegelmann</h3>
+              <h3>23. March 2017</h3>
+            </section>
+
+            <!- ---------------------------------------------------------- ->
+
+            <section>
+              <h1>Agenda</h1>
+              <ul class="no-bullets">
+                <li>Live Demo</li>
+                <li>Architecture of Push Notifications</li>
+                <li>Code Examples</li>
+                <li>DOs and DONTs of Push Notifications</li>
+              </ul>
+            </section>
+
+            <!- ---------------------------------------------------------- ->
+
+            <section>
+              <h2>Live Demo</h2>
+              <ul>
+                <li><a href="https://pwa-push-demo2.azurewebsites.net/">Client</a></li>
+                <li><a href="https://pwa-push-demo2.azurewebsites.net/web_app/index.html">Server</a></li>
+              </ul>
+            </section>
+
+            <!- ---------------------------------------------------------- ->
+
+            <section>
+              <h2>Architecture: Overview</h2>
+              <section>
+                <h3>Flow</h3>
+                <img src="push.png" style="background-color:white;">
+                Plus demo of vertical navigation
+              </section>
+
+              <section>
+                <h3>Service Workers</h3>
+              </section>
+
+              <section>
+                <h3>Push Services</h3>
+              </section>
+
+              <section>
+                <h3>HTTP/2</h3>
+              </section>
+
+            </section>
+
+            <!- ---------------------------------------------------------- ->
+
+
+            <section>
+              <h2>Code Examples</h2>
+              <pre><code class="javascript" data-trim data-noescape>
+app.post('/api/send-push', (req, res) => {
+    var allSubscriptions = getAllSubscriptions();
+
+    allSubscriptions.forEach(subscriber => {
+        webpush.sendNotification(
+            subscriber,
+            req.body.data,
+            options).catch((err) => {
+                console.log('Error while pushing...');
+            });
+    });
+    res.status(200).send({success: true});
+});
+              </code></pre>
+            </section>
+
+            <!- ---------------------------------------------------------- ->
+
+            <section>
+              <h2>Feature Demo: Fragments</h2>
+              <ul>
+                <li class="fragment">one</li>
+                <li class="fragment">dwa</li>
+                <li class="fragment">drei</li>
+              </ul>
+            </section>
+
+            <!- ---------------------------------------------------------- ->
+
+            <section>
+              <h2>Slide</h2>
+            </section>
+
+            <!- ---------------------------------------------------------- ->
+
+            <section>
+              <h2>Slide</h2>
+            </section>
+
+            <!- ---------------------------------------------------------- ->
+
+            <section>
+              <h2>Slide</h2>
+            </section>
+
+            <!- ========== END of deck ========== ->
+            </div>
+        </div>
+
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+
+        <script>
+            // More info https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                history: true,
+              transition: 'fade',
+
+                transitionSpeed: 'fast',
+                // More info https://github.com/hakimel/reveal.js#dependencies
+                dependencies: [
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+                ]
+            });
+        </script>
+    </body>
+</html>
