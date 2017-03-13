@@ -14,6 +14,7 @@ const options = {
         },
         TTL: 60 * 60
     };
+const subscriptionsFileName = './subscriptions/subscriptions.json';
 
 const app = express();
 app.use(bodyParser.json());
@@ -41,9 +42,10 @@ app.post('/api/send-push', (req, res) => {
 });
 
 app.post('/api/send-push-to-winner', (req, res) => {
-    var allSubscriptions = getAllSubscriptions();
+    var allSubscriptions = getAllSubscriptions(),
+        subscriber;
     if (allSubscriptions.length > 0){
-        var subscriber = allSubscriptions[JSON.parse(req.body.data).subscriberId];
+        subscriber = allSubscriptions[JSON.parse(req.body.data).subscriberId];
         webpush.sendNotification(
             subscriber,
             req.body.data,
@@ -65,17 +67,8 @@ app.post('/registerSubscription', (req, res) => {
 });
 
 app.post('/unregisterSubscription', (req, res) => {
-    var subscriptionObject = req.body.subscription;
-
-    var allSubscriptions = getAllSubscriptions();
-
-    var index = allSubscriptions.findIndex(element => {
-        return element.endpoint == subscriptionObject.endpoint;
-    });
-
-    if (index >= 0) {
-        allSubscriptions.splice(index, 1);
-    }
+    var subscriptionObject = req.body.subscription,
+        allSubscriptions = getAllSubscriptions().filter(el => el.endpoint !== subscriptionObject.endpoint);
     file.writeFileSync('./subscriptions/subscriptions.json', JSON.stringify(allSubscriptions), {flag: 'w+' });
     res.status(200).send({success: true});
 });
@@ -112,22 +105,17 @@ app.get('/getResultVote', function (req, res) {
 });
 
 function getAllSubscriptions() {
-    var fileContent = "[]";
+    var fileContent, allSubscriptions;
 
-    if (file.existsSync('./subscriptions/subscriptions.json')) {
-        fileContent = file.readFileSync('./subscriptions/subscriptions.json', 'utf8');
-
-        if (fileContent.length == 0) {
-            fileContent = '[]';
-        }
+    if (!file.existsSync(subscriptionsFileName)) {
+        return [];
     }
-
-    var allSubscriptions = JSON.parse(fileContent);
-    if (!Array.isArray(allSubscriptions)) {
-        allSubscriptions = [];
+    fileContent = file.readFileSync(subscriptionsFileName, 'utf8');
+    if (fileContent.length == 0) {
+        return [];
     }
-
-    return allSubscriptions;
+    allSubscriptions = JSON.parse(fileContent);
+    return Array.isArray(allSubscriptions) ? allSubscriptions : [];
 }
 
 // start node.js server
