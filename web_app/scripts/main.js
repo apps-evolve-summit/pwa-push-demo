@@ -1,8 +1,8 @@
 var reqInt = false;         // require interaction
 
-function getNumberOfSubscribers() {  
+function getNumberOfSubscribers() {
     return fetch('/getSubsCount', {
-        method: 'GET'                    
+        method: 'GET'
     }).then((res) => {
          return res.text();
     }).then((text) => {
@@ -20,7 +20,7 @@ function sendBasicPushMessage() {
             data: JSON.stringify({title: 'Simple push notification',
                     body: 'This is what a basic push notification looks like.',
                     requireInteraction: reqInt
-            })            
+            })
         })
     }).then((response) => {
         console.log(response);
@@ -38,7 +38,7 @@ function sendPushMessageWithIcon() {
                     body: 'This is what a push notification with icon looks like.',
                     icon: './web_app/images/notification.png',
                     requireInteraction: reqInt
-            })            
+            })
         })
     }).then((response) => {
         console.log(response);
@@ -57,7 +57,7 @@ function sendPushMessageWithVibrating() {
                     icon: './web_app/images/vibrating.png',
                     vibrate: [200, 100, 200, 100, 200, 100, 200],
                     requireInteraction: reqInt
-            })            
+            })
         })
     }).then((response) => {
         console.log(response);
@@ -66,7 +66,7 @@ function sendPushMessageWithVibrating() {
 
 function sendPushMessageWithAction() {
     fetch('/resetVotingResult', {
-        method: 'GET'                    
+        method: 'GET'
     });
     fetch('/api/send-push', {
         method: 'POST',
@@ -80,8 +80,8 @@ function sendPushMessageWithAction() {
                     vibrate: [200, 100, 300, 100, 200, 100, 400],
                     actions: [{ "action": "yes", "title": "Yes!!!", "icon": "./web_app/images/yes.png" },
                             { "action": "no", "title": "No!!!", "icon": "./web_app/images/no.png" }],
-                    requireInteraction: reqInt     
-            })            
+                    requireInteraction: reqInt
+            })
         })
     }).then((response) => {
         console.log(response);
@@ -99,9 +99,9 @@ function sendCustomMessage(pushTitle, message) {
                     body: message,
                     icon: './web_app/images/coffee.png',
                     badge: './web_app/images/coffee-beans.png',
-                    vibrate: [200, 100, 300, 100, 200, 100, 400],                    
-                    requireInteraction: reqInt     
-            })            
+                    vibrate: [200, 100, 300, 100, 200, 100, 400],
+                    requireInteraction: reqInt
+            })
         })
     }).then((response) => {
         console.log(response);
@@ -110,7 +110,7 @@ function sendCustomMessage(pushTitle, message) {
 
 function pickUpwinners() {
     getNumberOfSubscribers();
-    var allSubs = document.querySelector('#txtSubsCount').value; 
+    var allSubs = document.querySelector('#txtSubsCount').value;
     var random = Math.random();
     var firstWinner = parseInt(random * allSubs);
     var secondWinner = firstWinner;
@@ -135,7 +135,7 @@ function sendMessageToWinner(id) {
                     icon: './web_app/images/notification.png',
                     subscriberId    : id,
                     requireInteraction: reqInt
-            })            
+            })
         })
     }).then((response) => {
         console.log(response);
@@ -145,7 +145,7 @@ function sendMessageToWinner(id) {
 function initUI() {
     const basicPushNotificationBtn = document.querySelector('#btnSimplePush');
     basicPushNotificationBtn.addEventListener('click', () => {
-        sendBasicPushMessage();    
+        sendBasicPushMessage();
     });
 
     const pushNotificationWithIconBtn = document.querySelector('#btnPushWithIcon');
@@ -167,13 +167,11 @@ function initUI() {
     sendCustomPushBtn.addEventListener('click', () => {
         sendCustomMessage(document.querySelector('#txtPushTitle').value, document.querySelector('#txtPushMessage').value);
     });
-    
+
     const pickUpwinnersBtn = document.querySelector('#btnPickUpWinners');
     pickUpwinnersBtn.addEventListener('click', () => {
         pickUpwinners();
     });
 }
 
-window.addEventListener('load', () => {
-    initUI();
-});
+window.addEventListener('WebComponentsReady', initUI);
