@@ -1,0 +1,132 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="./bower_components/polymer/polymer.html">
+
+<link rel="import" href="./bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="./bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="./bower_components/iron-label/iron-label.html">
+<link rel="import" href="./bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="./bower_components/paper-card/paper-card.html">
+<link rel="import" href="./bower_components/paper-button/paper-button.html">
+<link rel="import" href="./bower_components/paper-input/paper-input.html">
+<link rel="import" href="./bower_components/paper-input/paper-textarea.html">
+
+<link rel="import" href="./bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="./bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="./bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="./bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="./bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="./bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<link rel="import" href="./bower_components/app-layout/demo/sample-content.html">
+
+<dom-module id="x-app">
+
+  <template>
+
+    <style>
+      app-header {
+        background-color: #00897B;
+        color: #fff;
+      }
+      app-header paper-icon-button {
+        --paper-icon-button-ink-color: white;
+      }
+    </style>
+
+    <app-header-layout>
+
+    <app-header reveals effects="waterfall">
+        <app-toolbar>
+            <div main-title>Push Notification Application Server</div>
+        </app-toolbar>
+    </app-header>
+
+    <paper-card id="allSubscribers" heading="Number of active subscribers" style="display: block; margin:24px;">
+          <div class="card-content">
+              <paper-input readonly="true" id="txtSubsCount" style="margin: 0 20px;"></paper-input><br>
+          </div>
+          <iron-ajax
+              id="ajax"
+              
+              url="../getSubsCount"
+              handle-as="text"
+              on-response="handleResponse"
+          ></iron-ajax>
+    </paper-card>
+    <paper-card id="votingResultCard" heading="Voting results:" style="display: block; margin:0 24px;">
+          <div class="card-content">
+              <paper-textarea readonly="true" id="txtVotingResults" style="margin: 0 20px;"></paper-textarea><br>
+          </div>
+          <iron-ajax
+              id="votingResult"
+              auto
+              url="../getResultVote"
+              handle-as="text"
+              on-response="onGetVotingResult"
+          ></iron-ajax>
+    </paper-card>
+    <paper-card heading="Different types of Push" style="display: block; margin:24px;">
+        <div class="card-content">
+            <paper-button id='btnSimplePush' raised>Send simple push notification</paper-button><br><br>
+            <paper-button id='btnPushWithIcon' raised>Send push notification with icon</paper-button><br><br>
+            <iron-label>
+                Only chrome and opera<br>
+                <paper-button id='btnPushWithVibrating' raised>Send push notification with vibrating</paper-button>
+            </iron-label><br><br>
+            <iron-label>
+                Only for Chrome<br>
+                <paper-button id='btnPushNotificationWithAction' raised>Send push notification with action buttons</paper-button> 
+            </iron-label><br><br>          
+        </div>
+    </paper-card>
+    <paper-card heading="Custom Push Notification" style="display: block; margin:24px;">
+        <paper-input id="txtPushTitle" always-float-label label="Push Notification Title" style="margin: 0 24px;"></paper-input>
+        <paper-textarea id="txtPushMessage" label="Push Notification Message" style="margin: 0 24px;"></paper-textarea>
+        <paper-button id='btnSendCustomPush' raised style="margin: 24px;">Send push notification</paper-button>
+    </paper-card>
+    <paper-card heading="Pick up winners" style="display: block; margin:24px;">
+        <paper-button id='btnPickUpWinners' raised style="margin: 24px;">Pick up winners</paper-button>
+    </paper-card>
+    </app-header-layout>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'x-app',
+
+
+      updateSubscriberCount: function() {
+            this.async(function() {
+              this.$.ajax.generateRequest();
+            }, 2000);
+      },
+
+      handleResponse: function (data) {
+          document.querySelector('#txtSubsCount').value = data.detail.response;
+          this.updateSubscriberCount();
+      },
+
+      updateVotingResult: function() {
+            this.async(function() {
+              this.$.votingResult.generateRequest();
+            }, 2000);
+      },
+
+      onGetVotingResult: function (data) {
+          document.querySelector('#txtVotingResults').value = data.detail.response;
+          this.updateVotingResult();
+      },
+
+    });
+  </script>
+
+</dom-module>

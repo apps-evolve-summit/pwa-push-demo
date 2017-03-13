@@ -20,13 +20,14 @@ self.addEventListener('push', function(event) {
 
 self.addEventListener('notificationclick', function(event) {
   event.notification.close();
-if (event.action === 'yes') {
-    console.log('Clicked yes');
-  } else if (event.action === 'no') {
-    console.log('Clicked no');
-  } else {
-    console.log('Clicked nothing');
-  }
+
+  if (event.action == 'yes' || event.action == 'no') {
+    fetch('/vote' + event.action, {
+      method: 'GET'                    
+    }).then(() => {});
+    event.waitUntil(
+        self.clients.openWindow('./index.html'));
+    }
 });
 
 self.addEventListener('notificationclose', function(event) {
