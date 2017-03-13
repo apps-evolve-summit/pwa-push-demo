@@ -167,18 +167,11 @@ function initUI() {
     sendCustomPushBtn.addEventListener('click', () => {
         sendCustomMessage(document.querySelector('#txtPushTitle').value, document.querySelector('#txtPushMessage').value);
     });
-
-    const requireInteractionsCheckbox = document.querySelector('#chbRequireInteraction');
-    requireInteractionsCheckbox.addEventListener('click', () => {
-        reqInt = requireInteractionsCheckbox.checked;
-    });
     
     const pickUpwinnersBtn = document.querySelector('#btnPickUpWinners');
     pickUpwinnersBtn.addEventListener('click', () => {
         pickUpwinners();
     });
-
-    getNumberOfSubscribers();
 }
 
 window.addEventListener('load', () => {
