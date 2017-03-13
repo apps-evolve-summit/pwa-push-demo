@@ -4,5 +4,3 @@ node_modules/
 /.vscode
 subscriptions/subscriptions.json
 npm-debug.log
-/pwa_client/bower_components
-/web_app/bower_components
