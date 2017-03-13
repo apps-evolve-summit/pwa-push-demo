@@ -2,7 +2,9 @@ const schedule = require('node-schedule');
 
 module.exports = (expression) => {
     var rule = new schedule.RecurrenceRule();
-    rule.second = 13;
+    rule.hour = 11;
+    rule.minute = 5;
+    rule.second = 0;
 
     var job = schedule.scheduleJob(rule, () => {
         expression();

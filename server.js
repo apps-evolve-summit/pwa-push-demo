@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const webpush = require('web-push');
 const file = require('fs');
-const scheduler = require('./scheduler.js')(() => console.log('Works2'));
+const scheduler = require('./scheduler.js')(() => console.log('It\'s time for lunch!'));
 
 const options = {
         vapidDetails: {
