@@ -2,5 +2,5 @@ node_modules/
 .tern-port
 /server/node_modules
 /.vscode
-subscriptions/
+subscriptions/subscriptions.json
 npm-debug.log
