@@ -14,6 +14,7 @@ const options = {
         },
         TTL: 60 * 60
     };
+const subscriptionsFileName = './subscriptions/subscriptions.json';
 
 const app = express();
 app.use(bodyParser.json());
@@ -51,7 +52,7 @@ app.post('/api/send-push-to-winner', (req, res) => {
     var allSubscriptions = getAllSubscriptions();
 
     if (allSubscriptions.length > 0){
-    var subscriber = allSubscriptions[JSON.parse(req.body.data).subscriberId]; 
+    var subscriber = allSubscriptions[JSON.parse(req.body.data).subscriberId];
 
     webpush.sendNotification(
         subscriber,
@@ -66,10 +67,10 @@ app.post('/api/send-push-to-winner', (req, res) => {
             res.status(400).send(err.message);
             }
         });
-    
-    res.status(200).send({success: true}); 
-    
-    }   
+
+    res.status(200).send({success: true});
+
+    }
 });
 
 app.post('/registerSubscription', (req, res) => {
@@ -114,7 +115,7 @@ app.get('/resetVotingResult', function (req, res) {
 
 app.get('/getResultVote', function (req, res) {
     if (yesVotes == 0 && noVotes == 0) {
-        res.status(200).send('');    
+        res.status(200).send('');
     } else {
         res.status(200).send('YES: ' + yesVotes + '\r\nNO: ' + noVotes);
     }
@@ -122,12 +123,11 @@ app.get('/getResultVote', function (req, res) {
 
 function getAllSubscriptions() {
     var fileContent, allSubscriptions;
-    const fileName = './subscriptions/subscriptions.json';
 
-    if (!file.existsSync(fileName)) {
+    if (!file.existsSync(subscriptionsFileName)) {
         return [];
     }
-    fileContent = file.readFileSync(fileName, 'utf8');
+    fileContent = file.readFileSync(subscriptionsFileName, 'utf8');
     if (fileContent.length == 0) {
         return [];
     }
