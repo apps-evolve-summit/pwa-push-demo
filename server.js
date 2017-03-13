@@ -33,24 +33,18 @@ app.post('/api/send-push', (req, res) => {
             subscriber,
             req.body.data,
             options
-            ).then(() => {
-                // res.status(200).send({success: true});
-            }).catch((err) => {
-                if (err.statusCode) {
-                res.status(err.statusCode).send(err.body);
-                } else {
-                res.status(400).send(err.message);
-                }
+            ).catch((err) => {
+                console.log('Error while pushing to [' + subscriber.endpoint + ']: ' + err.statusCode + ', ' + err.body);
             });
     });
-    res.status(200).send({success: true});    
+    res.status(200).send({success: true});
 });
 
 app.post('/registerSubscription', (req, res) => {
     var subscriptionObject = req.body.subscription;
-    
+
     var allSubscriptions = getAllSubscriptions();
-    
+
     allSubscriptions.push(subscriptionObject);
     file.writeFileSync('./subscriptions/subscriptions.json', JSON.stringify(allSubscriptions), {flag: 'w+' });
     res.status(200).send({success: true});
@@ -58,13 +52,13 @@ app.post('/registerSubscription', (req, res) => {
 
 app.post('/unregisterSubscription', (req, res) => {
     var subscriptionObject = req.body.subscription;
-    
+
     var allSubscriptions = getAllSubscriptions();
 
     var index = allSubscriptions.findIndex(element => {
-        return element.endpoint == subscriptionObject.endpoint;                
+        return element.endpoint == subscriptionObject.endpoint;
     });
-    
+
     if (index >= 0) {
         allSubscriptions.splice(index, 1);
     }
@@ -85,7 +79,7 @@ function getAllSubscriptions() {
 
     var allSubscriptions = JSON.parse(fileContent);
     if (!Array.isArray(allSubscriptions)) {
-        allSubscriptions = [];    
+        allSubscriptions = [];
     }
 
     return allSubscriptions;
