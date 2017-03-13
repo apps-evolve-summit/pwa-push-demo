@@ -4,10 +4,10 @@
   "description": "Node.js server for sending push notifications",
   "main": "server.js",
   "scripts": {
-    "start": "node app.js",
-    "monitor": "nodemon app.js"
+    "start": "node server.js",
+    "monitor": "nodemon server.js"
   },
-  "author": "Mieczyslaw Suska",
+  "author": "Mieczyslaw Suska, Mathias Kegelmann",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.16.1",

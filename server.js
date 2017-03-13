@@ -34,42 +34,25 @@ app.post('/api/send-push', (req, res) => {
         webpush.sendNotification(
             subscriber,
             req.body.data,
-            options
-            ).then(() => {
-                // res.status(200).send({success: true});
-            }).catch((err) => {
-                if (err.statusCode) {
-                res.status(err.statusCode).send(err.body);
-                } else {
-                res.status(400).send(err.message);
-                }
+            options).catch((err) => {
+                console.log('Error while pushing to [' + subscriber.endpoint + ']: ' + err.statusCode + ', ' + err.body);
             });
     });
     res.status(200).send({success: true});
 });
 
 app.post('/api/send-push-to-winner', (req, res) => {
-    var allSubscriptions = getAllSubscriptions();
-
+    var allSubscriptions = getAllSubscriptions(),
+        subscriber;
     if (allSubscriptions.length > 0){
-    var subscriber = allSubscriptions[JSON.parse(req.body.data).subscriberId];
-
-    webpush.sendNotification(
-        subscriber,
-        req.body.data,
-        options
-        ).then(() => {
-            // res.status(200).send({success: true});
-        }).catch((err) => {
-            if (err.statusCode) {
-            res.status(err.statusCode).send(err.body);
-            } else {
-            res.status(400).send(err.message);
-            }
-        });
-
-    res.status(200).send({success: true});
-
+        subscriber = allSubscriptions[JSON.parse(req.body.data).subscriberId];
+        webpush.sendNotification(
+            subscriber,
+            req.body.data,
+            options).catch((err) => {
+                console.log('Error while pushing to [' + subscriber.endpoint + ']: ' + err.statusCode + ', ' + err.body);
+            });
+        res.status(200).send({success: true});
     }
 });
 
