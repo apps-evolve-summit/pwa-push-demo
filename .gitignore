@@ -2,3 +2,5 @@ node_modules/
 .tern-port
 /server/node_modules
 /.vscode
+/pwa_client/bower_components
+/web_app/bower_components

@@ -4,6 +4,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const webpush = require('web-push');
 const file = require('fs');
+const scheduler = require('./scheduler.js')(() => console.log('It\'s time for lunch!'));
+
+const options = {
+        vapidDetails: {
+            subject: 'http://www.google.com',
+            publicKey: 'BGLh-Zyk0vcAhjb1mpSmdyNRk9VnndafH0bHAksx8LhQCPAULzxI_DeuT6mU0MBpN4STMpzBQJ1eakM-TBi8VN8',
+            privateKey: '6JNmGyPBbTUza1pIEAXueI39ChDxqZPD6S69gsygwjc'
+        },
+        TTL: 60 * 60
+    };
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,15 +27,6 @@ app.use('/', express.static('pwa_client'));
 
 // implementation of push notification method
 app.post('/api/send-push', (req, res) => {
-    const options = {
-        vapidDetails: {
-            subject: 'http://www.google.com',
-            publicKey: 'BGLh-Zyk0vcAhjb1mpSmdyNRk9VnndafH0bHAksx8LhQCPAULzxI_DeuT6mU0MBpN4STMpzBQJ1eakM-TBi8VN8',
-            privateKey: '6JNmGyPBbTUza1pIEAXueI39ChDxqZPD6S69gsygwjc'
-        },
-        TTL: 60 * 60
-    };
-
     var allSubscriptions = getAllSubscriptions();
 
     allSubscriptions.forEach(subscriber => {
@@ -44,6 +45,31 @@ app.post('/api/send-push', (req, res) => {
             });
     });
     res.status(200).send({success: true});    
+});
+
+app.post('/api/send-push-to-winner', (req, res) => {
+    var allSubscriptions = getAllSubscriptions();
+
+    if (allSubscriptions.length > 0){
+    var subscriber = allSubscriptions[JSON.parse(req.body.data).subscriberId]; 
+
+    webpush.sendNotification(
+        subscriber,
+        req.body.data,
+        options
+        ).then(() => {
+            // res.status(200).send({success: true});
+        }).catch((err) => {
+            if (err.statusCode) {
+            res.status(err.statusCode).send(err.body);
+            } else {
+            res.status(400).send(err.message);
+            }
+        });
+    
+    res.status(200).send({success: true}); 
+    
+    }   
 });
 
 app.post('/registerSubscription', (req, res) => {
@@ -70,6 +96,37 @@ app.post('/unregisterSubscription', (req, res) => {
     }
     file.writeFileSync('./subscriptions/subscriptions.json', JSON.stringify(allSubscriptions), {flag: 'w+' });
     res.status(200).send({success: true});
+});
+
+app.get('/getSubsCount', function (req, res) {
+    var allSubscriptions = getAllSubscriptions();
+    res.status(200).send(allSubscriptions.length.toString());
+});
+
+var yesVotes = 0;
+app.get('/voteYes', function (req, res) {
+    yesVotes++;
+    res.sendStatus(200);
+});
+
+var noVotes = 0;
+app.get('/voteNo', function (req, res) {
+    noVotes++;
+    res.sendStatus(200);
+});
+
+app.get('/resetVotingResult', function (req, res) {
+    yesVotes = 0;
+    noVotes = 0;
+    res.sendStatus(200);
+});
+
+app.get('/getResultVote', function (req, res) {
+    if (yesVotes == 0 && noVotes == 0) {
+        res.status(200).send('');    
+    } else {
+        res.status(200).send('YES: ' + yesVotes + '\r\nNO: ' + noVotes);
+    }
 });
 
 function getAllSubscriptions() {
