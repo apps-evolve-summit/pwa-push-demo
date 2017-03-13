@@ -1,4 +1,45 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!doctype html>
 <html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <title>Push Notification Sender</title>
+
+  <script src="./bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="x-app.html">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #f1f1f1;
+    }
+  </style>
+
+</head>
+<body unresolved>
+
+  <x-app id='test'></x-app>
+  <script>
+      document.querySelector('#test').updateSubscriberCount();
+  </script>
+  <script src='./scripts/main.js'></script>
+</body>
+</html>
+
+<!--<html>
     <head>
         <meta charset="utf-8">
     </head>
@@ -9,12 +50,18 @@
             <button id='btnSimplePush'>Send simple push notification</button> <br>
             <button id='btnPushWithIcon'>Send push notification with icon</button> <br>
             <button id='btnPushWithVibrating'>Send push notification with vibrating</button> only chrome and opera <br>
-            <button id='btnPushWithCustomBadge'>Send push notification with custom badge</button> only chrome and opera <br>
             <button id='btnPushNotificationWithAction'>Send push notification with action buttons</button> only chrome <br>       
 
-            <ul>TODO: <li>badge,</li> <li> notify only selected users</li> </ul>
+            <input id='txtSubsCount' type="text"> <br><br>
+            <label for="txtPushTitle">Push title:</label><input type="text" id="txtPushTitle"><br>
+            <label for="txtPushMessage">Push message:</label><textarea type="text" id="txtPushMessage" ></textarea><br>
+            <button id='btnSendCustomPush'>Send custom message</button> <br>
+
+            <button id='btnPickUpWinners'>Pick up winners</button> <br>
+
+            <ul>TODO: <li> notify only selected users</li> </ul>
         </div>
 
-        <script src='./scripts/main.js'></script
+        <script src='./scripts/main.js'></script>
     </body>
-</html>
+</html>-->
