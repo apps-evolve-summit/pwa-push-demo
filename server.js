@@ -33,50 +33,32 @@ app.post('/api/send-push', (req, res) => {
         webpush.sendNotification(
             subscriber,
             req.body.data,
-            options
-            ).then(() => {
-                // res.status(200).send({success: true});
-            }).catch((err) => {
-                if (err.statusCode) {
-                res.status(err.statusCode).send(err.body);
-                } else {
-                res.status(400).send(err.message);
-                }
+            options).catch((err) => {
+                console.log('Error while pushing to [' + subscriber.endpoint + ']: ' + err.statusCode + ', ' + err.body);
             });
     });
-    res.status(200).send({success: true});    
+    res.status(200).send({success: true});
 });
 
 app.post('/api/send-push-to-winner', (req, res) => {
     var allSubscriptions = getAllSubscriptions();
-
     if (allSubscriptions.length > 0){
-    var subscriber = allSubscriptions[JSON.parse(req.body.data).subscriberId]; 
-
-    webpush.sendNotification(
-        subscriber,
-        req.body.data,
-        options
-        ).then(() => {
-            // res.status(200).send({success: true});
-        }).catch((err) => {
-            if (err.statusCode) {
-            res.status(err.statusCode).send(err.body);
-            } else {
-            res.status(400).send(err.message);
-            }
-        });
-    
-    res.status(200).send({success: true}); 
-    
-    }   
+        var subscriber = allSubscriptions[JSON.parse(req.body.data).subscriberId];
+        webpush.sendNotification(
+            subscriber,
+            req.body.data,
+            options).catch((err) => {
+                console.log('Error while pushing to [' + subscriber.endpoint + ']: ' + err.statusCode + ', ' + err.body);
+            });
+        res.status(200).send({success: true});
+    }
 });
 
 app.post('/registerSubscription', (req, res) => {
     var subscriptionObject = req.body.subscription;
-    
+
     var allSubscriptions = getAllSubscriptions();
-    
+
     allSubscriptions.push(subscriptionObject);
     file.writeFileSync('./subscriptions/subscriptions.json', JSON.stringify(allSubscriptions), {flag: 'w+' });
     res.status(200).send({success: true});
@@ -84,13 +66,13 @@ app.post('/registerSubscription', (req, res) => {
 
 app.post('/unregisterSubscription', (req, res) => {
     var subscriptionObject = req.body.subscription;
-    
+
     var allSubscriptions = getAllSubscriptions();
 
     var index = allSubscriptions.findIndex(element => {
-        return element.endpoint == subscriptionObject.endpoint;                
+        return element.endpoint == subscriptionObject.endpoint;
     });
-    
+
     if (index >= 0) {
         allSubscriptions.splice(index, 1);
     }
@@ -123,7 +105,7 @@ app.get('/resetVotingResult', function (req, res) {
 
 app.get('/getResultVote', function (req, res) {
     if (yesVotes == 0 && noVotes == 0) {
-        res.status(200).send('');    
+        res.status(200).send('');
     } else {
         res.status(200).send('YES: ' + yesVotes + '\r\nNO: ' + noVotes);
     }
@@ -142,7 +124,7 @@ function getAllSubscriptions() {
 
     var allSubscriptions = JSON.parse(fileContent);
     if (!Array.isArray(allSubscriptions)) {
-        allSubscriptions = [];    
+        allSubscriptions = [];
     }
 
     return allSubscriptions;
