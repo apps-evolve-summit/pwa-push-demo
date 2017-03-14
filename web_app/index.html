@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <x-app id='test'></x-app>
   <script>
-      document.querySelector('#test').updateSubscriberCount();
+      window.addEventListener('WebComponentsReady', () => document.querySelector('#test').updateSubscriberCount());
   </script>
   <script src='./scripts/main.js'></script>
 </body>
@@ -50,7 +50,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <button id='btnSimplePush'>Send simple push notification</button> <br>
             <button id='btnPushWithIcon'>Send push notification with icon</button> <br>
             <button id='btnPushWithVibrating'>Send push notification with vibrating</button> only chrome and opera <br>
-            <button id='btnPushNotificationWithAction'>Send push notification with action buttons</button> only chrome <br>       
+            <button id='btnPushNotificationWithAction'>Send push notification with action buttons</button> only chrome <br>
 
             <input id='txtSubsCount' type="text"> <br><br>
             <label for="txtPushTitle">Push title:</label><input type="text" id="txtPushTitle"><br>
