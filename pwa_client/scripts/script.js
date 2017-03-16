@@ -1,3 +1,6 @@
+window.addEventListener('WebComponentsReady', function(e) {
+console.log('components ready');
+
 // variables
 var swRegistration;
 var isSubscribed;
@@ -24,7 +27,7 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 
 // initialize UI and get subscription details
 function initUI() {
-  subscribeButton.addEventListener('click', function() {    
+  subscribeButton.addEventListener('click', function() {
     subscribeButton.disabled = true;
     if (isSubscribed) {
       unsubscribeUser();
@@ -41,7 +44,7 @@ function initUI() {
     if (isSubscribed) {
       console.log('User\'s subscription is active!');
       txtSubscriptionDetails.style.display = "";
-      txtSubscriptionDetails.value = JSON.stringify(subscription);     
+      txtSubscriptionDetails.value = JSON.stringify(subscription);
     } else {
       txtSubscriptionDetails.style.display = "none";
       txtSubscriptionDetails.value = "";
@@ -53,7 +56,7 @@ function initUI() {
     var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('voted')) {
       fetch('/getResultVote', {
-        method: 'GET'                    
+        method: 'GET'
       }).then((res) => {
           return res.text();
       }).then((text) => {
@@ -66,7 +69,7 @@ function initUI() {
 // refreshes the state of the "Subscribe / unsubscribe" button
 function updateSubscriptionButton() {
   if (isSubscribed) {
-    subscribeButton.icon = 'social:notifications-active';    
+    subscribeButton.icon = 'social:notifications-active';
   } else {
     subscribeButton.icon = 'social:notifications-off';
     votingResultCard.style.display = "none";
@@ -89,7 +92,7 @@ function subscribeUser() {
     txtSubscriptionDetails.value = JSON.stringify(subscription);
     updateSubscriptionButton();
     registerSubscriptionOnServer(subscription);
-    
+
   }).catch(function(err) {
     console.log('Unable to subscribe user ', err);
   });
@@ -123,8 +126,8 @@ function registerSubscriptionOnServer(subscription) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            subscription: subscription,          
-            })            
+            subscription: subscription,
+            })
         });
 }
 
@@ -135,8 +138,8 @@ function unregisterSubscriptionOnServer(subscription) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            subscription: subscription,          
-            })            
+            subscription: subscription,
+            })
         });
 }
 
@@ -155,3 +158,5 @@ function urlB64ToUint8Array(base64String) {
   }
   return outputArray;
 }
+
+});
